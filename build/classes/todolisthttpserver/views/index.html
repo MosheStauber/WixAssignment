@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+        <script>
+            function changeForm(inputBtn){
+                if(inputBtn.value == 'add'){
+                  $("#my-form").attr("action", "/additem");
+                  $("#instructions").text("Enter Note:");
+                  $("#note-text").attr("form", "my-form").show();
+                  $("#note-id").attr("form", "dead").hide();
+                }else{
+                  $("#my-form").attr("action", "/deleteitem");
+                  $("#instructions").text("Enter Note ID to Delete:");
+                  $("#note-text").attr("form", "dead").hide();
+                  $("#note-id").attr("form", "my-form").attr("type", "number").show();
+                }
+            }
+            
+            // Reset the form on browser back button pressed
+            function setForm() { $(":radio[value=add]").click();            };
+            
+        
+        </script>
+        <title>Simple To-Do List App </title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+    <body onpageshow="setForm()">
+        <input name="form-type" type="radio" value="add" onclick="changeForm(this)" checked/>Add Item</br>
+        <input name="form-type" type="radio" value="delete" onclick="changeForm(this)">Delete Item</br></br>
+        <form action="additem" id="my-form">
+          <span id="instructions">Enter Note:</span><br>
+          <textarea id="note-text" rows="4" cols="50" name="note" form="my-form">Enter text here...</textarea>
+          <input id="note-id" type="hidden" name="note-id" form="dead">
+          </br><input type="submit">
+        </form>  
+        
+        </br></br>
+
+        <button id="get-all-items-btn" onclick="location.href='/getallitems'">Get All Items</button>
+        <button id="show-history-btn" onclick="location.href='/showhistory'">Show History</button>
+    </body>
+    
+</html>
