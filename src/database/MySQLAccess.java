@@ -28,22 +28,56 @@ public class MySQLAccess {
     private Statement statement = null;
     private PreparedStatement preparedStatement = null;
     private ResultSet resultSet = null;
-    private static final String URL = "jdbc:mysql://localhost:3306/javabase";
-    private static final String USERNAME = "moshe";
-    private static final String PASSWORD = "ilikeeggs";
+    private String url;
+    private String username;
+    private String password;
+    private boolean isTest;
     
-    public MySQLAccess(){        
+    public MySQLAccess(String url, String username, String password){        
         try {
             // This will load the MySQL driver, each DB has its own driver
             Class.forName("com.mysql.jdbc.Driver");
         } catch (Exception ex) { }
       
+        this.url = url;
+        this.username = username;
+        this.password = password;
     }
     
+    public MySQLAccess(String url, String username, String password, boolean isTest){        
+        try {
+            // This will load the MySQL driver, each DB has its own driver
+            Class.forName("com.mysql.jdbc.Driver");
+        } catch (Exception ex) { }
+      
+        this.url = url;
+        this.username = username;
+        this.password = password;
+        
+        if(isTest){
+            try {
+                // Add a new note to the database.
+                connect = DriverManager.getConnection(url, username, password);
+                statement = connect.createStatement();
+                String query1 = "TRUNCATE TABLE notes";
+                String query2 = "TRUNCATE TABLE logs";
+                statement.executeUpdate(query1);
+                statement.executeUpdate(query2);                
+            }catch(Exception e){}
+            finally{
+                close();
+            }
+        }
+    }
+    
+    /*
+        This method adds an item to the notes table, if it was successfull it
+        records the addition in the logs. It returns the id of the newly inserted item
+    */
     public int addItem(String description) throws Exception{
         try {
             // Add a new note to the database.
-            connect = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+            connect = DriverManager.getConnection(url, username, password);
             preparedStatement = connect
                 .prepareStatement("insert into notes(DESCRIPTION) values (?)", Statement.RETURN_GENERATED_KEYS);
             preparedStatement.setString(1, description);
@@ -63,20 +97,20 @@ public class MySQLAccess {
                 return insertedID;
             }
             else {
-                throw new SQLException("Creating user failed, no ID obtained.");
+                return -1;
             }
         }
         } catch (Exception e) {
           throw e;
         } finally {
-          close();
+            close();
         }
     }
     
     public String deleteItem(int id) throws Exception{
         
         try {
-            connect = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+            connect = DriverManager.getConnection(url, username, password);
             statement = connect.createStatement();
             
             // Copy over row to be deleted to logs table
@@ -98,15 +132,15 @@ public class MySQLAccess {
             }
             
         } catch (Exception e) {
-          throw e;
+            throw e;
         } finally {
-          close();
+            close();
         }
     }
     
     public List<NoteModel> getAllItems() throws Exception{
         try {
-            connect = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+            connect = DriverManager.getConnection(url, username, password);
             // Statements allow to issue SQL queries to the database
             statement = connect.createStatement();
             // Result set get the result of the SQL query
@@ -114,15 +148,15 @@ public class MySQLAccess {
             return writeNoteResultSet(resultSet);
 
         } catch (Exception e) {
-          throw e;
+            throw e;
         } finally {
-          close();
+            close();
         }
     }
     
     public List<LogModel> getLogs() throws Exception{
         try {
-            connect = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+            connect = DriverManager.getConnection(url, username, password);
             // Statements allow to issue SQL queries to the database
             statement = connect.createStatement();
             // Result set get the result of the SQL query
@@ -130,9 +164,9 @@ public class MySQLAccess {
             return writeLogResultSet(resultSet);
 
         } catch (Exception e) {
-          throw e;
+            throw e;
         } finally {
-          close();
+            close();
         }
     }
     
@@ -168,6 +202,10 @@ public class MySQLAccess {
 
         if (statement != null) {
           statement.close();
+        }
+        
+        if(preparedStatement != null){
+            preparedStatement.close();
         }
 
         if (connect != null) {

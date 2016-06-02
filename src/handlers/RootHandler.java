@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package todolisthttpserver.handlers;
+package handlers;
 
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
@@ -21,7 +21,7 @@ public class RootHandler implements HttpHandler {
 
     @Override
     public void handle(HttpExchange he) throws IOException {
-        String root = "src/todolisthttpserver";
+        String root = "src";
         File indexHTML = new File(root + "/views/index.html").getCanonicalFile();
         if(!indexHTML.exists()){
             String response = "404 (Not Found)\n"

@@ -9,11 +9,11 @@ import com.sun.net.httpserver.HttpServer;
 import database.MySQLAccess;
 import java.io.IOException;
 import java.net.InetSocketAddress;
-import todolisthttpserver.handlers.AddItemHandler;
-import todolisthttpserver.handlers.DeleteItemHandler;
-import todolisthttpserver.handlers.GetAllItemsHandler;
-import todolisthttpserver.handlers.RootHandler;
-import todolisthttpserver.handlers.ShowHistoryHandler;
+import handlers.AddItemHandler;
+import handlers.DeleteItemHandler;
+import handlers.GetAllItemsHandler;
+import handlers.RootHandler;
+import handlers.ShowHistoryHandler;
 
 /**
  *
@@ -21,7 +21,7 @@ import todolisthttpserver.handlers.ShowHistoryHandler;
  */
 public class ToDoListHttpServer {
 
-    public static final MySQLAccess DAO = new MySQLAccess();
+    public static final MySQLAccess DAO = new MySQLAccess("jdbc:mysql://localhost:3306/javabase", "moshe", "ilikeeggs");
     /**
      * @param args the command line arguments
      */

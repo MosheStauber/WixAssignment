@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package todolisthttpserver.handlers;
+package handlers;
 
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
@@ -30,20 +30,20 @@ public class AddItemHandler implements HttpHandler{
     @Override
     public void handle(HttpExchange he) throws IOException {
         
-        Map<String, Object> parameters = new HashMap<String, Object>();
         URI requestedUri = he.getRequestURI();
         String query = requestedUri.getRawQuery();
-        System.out.println("Query is : " + query);
-        parseQuery(query, parameters);
-        
+        System.out.println(query);        
         // send response
-        String noteContent = "";
+        String noteContent = parseQuery(query);;
         String response = "";
-        for (String key : parameters.keySet())
-                 noteContent += parameters.get(key) + "\n";
-        
         try {
-            response = ToDoListHttpServer.DAO.addItem(noteContent) + ": " +noteContent;
+            if(noteContent != null){
+                int insertedID;
+                insertedID = ToDoListHttpServer.DAO.addItem(noteContent);
+                response = insertedID + ": " +noteContent;
+            }else{
+                response = "Cannot insert empty note";
+            }
         } catch (Exception ex) {
             Logger.getLogger(AddItemHandler.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -54,39 +54,18 @@ public class AddItemHandler implements HttpHandler{
         os.close();
     }
     
-    public static void parseQuery(String query, Map<String, 
-	Object> parameters) throws UnsupportedEncodingException {
+    public static String parseQuery(String query) throws UnsupportedEncodingException {
 
         if (query != null) {
             String param[] = query.split("=");
-            String key = null;
             String value = null;
-            if (param.length > 0) {
-                key = URLDecoder.decode(param[0], 
-                System.getProperty("file.encoding"));
-            }
-
             if (param.length > 1) {
                 value = URLDecoder.decode(param[1], 
                 System.getProperty("file.encoding"));
+                return value;
             }
-
-            if (parameters.containsKey(key)) {
-                Object obj = parameters.get(key);
-                if (obj instanceof List<?>) {
-                    List<String> values = (List<String>) obj;
-                    values.add(value);
-
-                } else if (obj instanceof String) {
-                    List<String> values = new ArrayList<String>();
-                    values.add((String) obj);
-                    values.add(value);
-                    parameters.put(key, values);
-                }
-            } else {
-                parameters.put(key, value);
-            }
-
         }
+        
+        return null;
     }
 }

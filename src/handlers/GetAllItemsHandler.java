@@ -3,11 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package todolisthttpserver.handlers;
+package handlers;
 
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
-import database.LogModel;
 import database.NoteModel;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -20,33 +19,31 @@ import todolisthttpserver.ToDoListHttpServer;
  *
  * @author moshe
  */
-public class ShowHistoryHandler implements HttpHandler {
+public class GetAllItemsHandler implements HttpHandler{
 
     @Override
     public void handle(HttpExchange he) throws IOException {
-        List<LogModel> logs;
+        List<NoteModel> allNotes;
         String response = "<table border=\"1\">\n"
                 + "<tr>\n"
                 + "\t<th>NoteID</th>\n"
                 + "\t<th>Content</th>\n"
-                + "\t<th>Type</th>\n"
                 + "\t<th>Created</th>\n"
                 + "</tr>";
         try {
-            logs = ToDoListHttpServer.DAO.getLogs();
-            for(LogModel log : logs){
+            allNotes = ToDoListHttpServer.DAO.getAllItems();
+            for(NoteModel note : allNotes){
                 response +=  "<tr>\n"
-                            + "\t<td>" + log.getId() + "</td>"
-                            + "\t<td>" + log.getContent() + "</td>"
-                            + "\t<td>" + log.getLogType() + "</td>"
-                            + "\t<td>" + log.getDateCreated() + "</td>"
+                            + "\t<td>" + note.getId() + "</td>"
+                            + "\t<td>" + note.getContent() + "</td>"
+                            + "\t<td>" + note.getDateCreated() + "</td>"
                             + "</tr>";
             }
             response += "</table>";
         } catch (Exception ex) {
             Logger.getLogger(GetAllItemsHandler.class.getName()).log(Level.SEVERE, null, ex);
         }
-
+        
         he.sendResponseHeaders(200, response.length());        
         OutputStream os = he.getResponseBody();
         os.write(response.getBytes());
