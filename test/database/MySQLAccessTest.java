@@ -70,7 +70,7 @@ public class MySQLAccessTest {
         assertEquals(expResult, result);
         
         // Test invalid deletion 
-        expResult = "No note with ID: " +id+ " was found";
+        expResult = "Note with ID: " +id+ " does not exist";
         result = instance.deleteItem(id);
         assertEquals(expResult, result);
     }
