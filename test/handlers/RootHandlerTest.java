@@ -6,6 +6,12 @@
 package handlers;
 
 import com.sun.net.httpserver.HttpExchange;
+import com.sun.net.httpserver.HttpServer;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.net.InetSocketAddress;
+import java.net.URL;
+import java.net.URLConnection;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
@@ -24,11 +30,19 @@ public class RootHandlerTest {
     @Test
     public void testHandle() throws Exception {
         System.out.println("handle");
-        HttpExchange he = null;
-        RootHandler instance = new RootHandler();
-        instance.handle(he);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        HttpServer httpServer = HttpServer.create(new InetSocketAddress(9000), 0);
+        httpServer.createContext("/", new RootHandler());
+        
+        // start the server
+        httpServer.start();
+        // verify our client code
+        URL url = new URL("http://localhost:9000/");
+        URLConnection conn = url.openConnection();
+        BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+        assertEquals("<!DOCTYPE html>", in.readLine());
+
+        // stop the server
+        httpServer.stop(0);
     }
     
 }

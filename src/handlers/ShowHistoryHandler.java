@@ -25,31 +25,32 @@ public class ShowHistoryHandler implements HttpHandler {
     @Override
     public void handle(HttpExchange he) throws IOException {
         List<LogModel> logs;
-        String response = "<table border=\"1\">\n"
+        StringBuilder response = new StringBuilder();
+                response.append("<table border=\"1\">\n"
                 + "<tr>\n"
                 + "\t<th>NoteID</th>\n"
                 + "\t<th>Content</th>\n"
                 + "\t<th>Type</th>\n"
                 + "\t<th>Created</th>\n"
-                + "</tr>";
+                + "</tr>");
         try {
             logs = ToDoListHttpServer.DAO.getLogs();
             for(LogModel log : logs){
-                response +=  "<tr>\n"
+                response.append( "<tr>\n"
                             + "\t<td>" + log.getId() + "</td>"
                             + "\t<td>" + log.getContent() + "</td>"
                             + "\t<td>" + log.getLogType() + "</td>"
                             + "\t<td>" + log.getDateCreated() + "</td>"
-                            + "</tr>";
+                            + "</tr>");
             }
-            response += "</table>";
+            response.append("</table>");
         } catch (Exception ex) {
             Logger.getLogger(GetAllItemsHandler.class.getName()).log(Level.SEVERE, null, ex);
         }
 
         he.sendResponseHeaders(200, response.length());        
         OutputStream os = he.getResponseBody();
-        os.write(response.getBytes());
+        os.write(response.toString().getBytes());
         os.close();
     }
     
