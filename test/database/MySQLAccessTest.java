@@ -26,10 +26,18 @@ public class MySQLAccessTest {
     @Test
     public void testAddItem() throws Exception {
         System.out.println("addItem");
+        
+        String server = "jdbc:mysql://wixassignment.c9kdh6uh1bbe.us-west-2.rds.amazonaws.com/";
+        String dbname = "wixtodolisttest";
+        String username = "moshe";
+        String password = "1Likeeggs";
+        boolean isTest = true;
+        
+        MySQLAccess instance = new MySQLAccess(server + dbname, username, password, isTest);
         String description = "hello";
-        MySQLAccess instance = new MySQLAccess("jdbc:mysql://localhost:3306/javabasetest", "moshe", "ilikeeggs", true);
-        int expResult = 1;
         int result = instance.addItem(description);
+        
+        int expResult = 1;
         assertEquals(expResult, result);
     }
 
@@ -39,8 +47,16 @@ public class MySQLAccessTest {
     @Test
     public void testDeleteItem() throws Exception {
         System.out.println("deleteItem");
-        MySQLAccess instance = new MySQLAccess("jdbc:mysql://localhost:3306/javabasetest", "moshe", "ilikeeggs", true);
+        
+        String server = "jdbc:mysql://wixassignment.c9kdh6uh1bbe.us-west-2.rds.amazonaws.com/";
+        String dbname = "wixtodolisttest";
+        String username = "moshe";
+        String password = "1Likeeggs";
+        boolean isTest = true;
+        
+        MySQLAccess instance = new MySQLAccess(server + dbname, username, password, isTest);
         instance.addItem("hello");
+        
         int id = 1;
         String expResult = "Successfully deleted note with ID: " + id;
         String result = instance.deleteItem(id);
@@ -53,7 +69,14 @@ public class MySQLAccessTest {
     @Test
     public void testGetAllItems() throws Exception {
         System.out.println("getAllItems");
-        MySQLAccess instance = new MySQLAccess("jdbc:mysql://localhost:3306/javabasetest", "moshe", "ilikeeggs", true);
+        
+        String server = "jdbc:mysql://wixassignment.c9kdh6uh1bbe.us-west-2.rds.amazonaws.com/";
+        String dbname = "wixtodolisttest";
+        String username = "moshe";
+        String password = "1Likeeggs";
+        boolean isTest = true;
+        
+        MySQLAccess instance = new MySQLAccess(server + dbname, username, password, isTest);
         instance.addItem("hello");
         
         Date date = new Date(System.currentTimeMillis());
@@ -72,7 +95,14 @@ public class MySQLAccessTest {
     @Test
     public void testGetLogs() throws Exception {
         System.out.println("getLogs");
-        MySQLAccess instance = new MySQLAccess("jdbc:mysql://localhost:3306/javabasetest", "moshe", "ilikeeggs", true);
+        
+        String server = "jdbc:mysql://wixassignment.c9kdh6uh1bbe.us-west-2.rds.amazonaws.com/";
+        String dbname = "wixtodolisttest";
+        String username = "moshe";
+        String password = "1Likeeggs";
+        boolean isTest = true;
+        
+        MySQLAccess instance = new MySQLAccess(server + dbname, username, password, isTest);
         instance.addItem("hello");
         
         Date date = new Date(System.currentTimeMillis());

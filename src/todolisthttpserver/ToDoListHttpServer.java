@@ -20,8 +20,12 @@ import handlers.ShowHistoryHandler;
  * @author moshe
  */
 public class ToDoListHttpServer {
-
-    public static final MySQLAccess DAO = new MySQLAccess("jdbc:mysql://localhost:3306/javabase", "moshe", "ilikeeggs");
+    static final String server = "jdbc:mysql://wixassignment.c9kdh6uh1bbe.us-west-2.rds.amazonaws.com/";
+    static final String dbname = "wixtodolist";
+    static final String username = "moshe";
+    static final String password = "1Likeeggs";
+    
+    public static final MySQLAccess DAO = new MySQLAccess(server + dbname, username, password);
     /**
      * @param args the command line arguments
      */
