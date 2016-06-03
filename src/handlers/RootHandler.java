@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package handlers;
 
 import com.sun.net.httpserver.HttpExchange;
@@ -16,13 +11,16 @@ import java.io.OutputStream;
 /**
  *
  * @author moshe
+ * This class handle the root url context for the app. It returns the index.html file
+ * which contains the form for the client to interact with. 
  */
 public class RootHandler implements HttpHandler {
 
     @Override
     public void handle(HttpExchange he) throws IOException {
-        String root = "src";
-        File indexHTML = new File(root + "/views/index.html").getCanonicalFile();
+        
+        File indexHTML = new File("src/views/index.html").getCanonicalFile(); 
+        
         if(!indexHTML.exists()){
             String response = "404 (Not Found)\n"
                     + "curretn dir: " + System.getProperty("user.dir");

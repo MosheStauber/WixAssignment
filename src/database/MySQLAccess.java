@@ -1,10 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package database;
-
 
 import java.sql.Connection;
 import java.sql.Date;
@@ -44,6 +38,10 @@ public class MySQLAccess {
         this.password = password;
     }
     
+    /**
+     * 
+     * This constructor is used for testing
+     */
     public MySQLAccess(String url, String username, String password, boolean isTest){        
         try {
             // This will load the MySQL driver, each DB has its own driver
@@ -70,10 +68,10 @@ public class MySQLAccess {
         }
     }
     
-    /*
-        This method adds an item to the notes table, if it was successfull it
-        records the addition in the logs. It returns the id of the newly inserted item
-    */
+    /**
+     * This method adds an item to the notes table, if it was successful it
+     * records the addition in the logs. It returns inserted items ID
+     */
     public int addItem(String description) throws Exception{
         try {
             // Add a new note to the database.
@@ -83,10 +81,11 @@ public class MySQLAccess {
             preparedStatement.setString(1, description);
             preparedStatement.executeUpdate();
             
-            // If database update success, write to log.
-            try (ResultSet generatedKeys = preparedStatement.getGeneratedKeys()) {
+            // If database update success, write to log and return the new items ID.
+            ResultSet generatedKeys = preparedStatement.getGeneratedKeys();
             if (generatedKeys.next()) {
                 int insertedID = generatedKeys.getInt(1);
+                
                 preparedStatement = connect
                         .prepareStatement("insert into logs(NOTEID, DESCRIPTION, LOGTYPE) values (?,?,?)", 
                         Statement.RETURN_GENERATED_KEYS);
@@ -94,12 +93,13 @@ public class MySQLAccess {
                 preparedStatement.setString(2, description);
                 preparedStatement.setString(3, "ADDED");
                 preparedStatement.executeUpdate();
+                
                 return insertedID;
             }
             else {
-                return -1;
+                throw new Exception("Note description cannot be NULL");
             }
-        }
+            
         } catch (Exception e) {
           throw e;
         } finally {
@@ -107,14 +107,23 @@ public class MySQLAccess {
         }
     }
     
+    /**
+     * 
+     * This method deletes items from the database. It first checks if the the 
+     * row exists, if it does it copies it to the log and deletes it, otherwise
+     * it returns a response that the row with given ID does not exist.
+     */
     public String deleteItem(int id) throws Exception{
         
         try {
             connect = DriverManager.getConnection(url, username, password);
             statement = connect.createStatement();
             
-            // Copy over row to be deleted to logs table
+            // Retrive row to be deleted to logs table
             resultSet = statement.executeQuery("select DESCRIPTION from notes where id =" + id);
+            
+            // If the row exists, it copies it over to the log table and deletes.
+            // Otherwise it responds with invalid operation
             if(resultSet.next()){
                 String noteID = ""+id;
                 String content = resultSet.getString("DESCRIPTION");
@@ -128,7 +137,7 @@ public class MySQLAccess {
                 statement.executeUpdate("delete from notes where id =" + id);
                 return "Successfully deleted note with ID: " + id;
             }else{
-                return "No note with ID: " +id+ " was found";
+                return "Note with ID: " +id+ " does not exist";
             }
             
         } catch (Exception e) {
@@ -138,6 +147,10 @@ public class MySQLAccess {
         }
     }
     
+    /**
+     * This method executes a statement to get all rows in the db.
+     * It return a list of NoteModels
+     */
     public List<NoteModel> getAllItems() throws Exception{
         try {
             connect = DriverManager.getConnection(url, username, password);
@@ -154,6 +167,10 @@ public class MySQLAccess {
         }
     }
     
+    /**
+     * This method executes a statement to get all rows in the db.
+     * It return a list of LogModels
+     */
     public List<LogModel> getLogs() throws Exception{
         try {
             connect = DriverManager.getConnection(url, username, password);
@@ -170,6 +187,10 @@ public class MySQLAccess {
         }
     }
     
+    /**
+     * This method populates a list of NoteModels from a given result set and 
+     * returns the list.
+     */
     private List<NoteModel> writeNoteResultSet(ResultSet resultSet) throws SQLException {
         List<NoteModel> resultList = new ArrayList<>();
         while (resultSet.next()) {
@@ -181,6 +202,10 @@ public class MySQLAccess {
         return resultList;
     }
     
+    /**
+     * This method populates a list of LogModels from a given result set and 
+     * returns the list.
+     */
     private List<LogModel> writeLogResultSet(ResultSet resultSet) throws SQLException {
         List<LogModel> resultList = new ArrayList<>();
         while (resultSet.next()) {

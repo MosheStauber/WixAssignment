@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package handlers;
 
 import com.sun.net.httpserver.HttpExchange;
@@ -18,6 +13,14 @@ import static org.junit.Assert.*;
 /**
  *
  * @author moshe
+ * 
+ * This class runs a test to verify the delete context handler. It attempts to 
+ * delete an invalid note and expects it to fail. It makes sure the handle method 
+ * works properly. 
+ * 
+ * It does not test the actual database call as that is the job of the 
+ * MySQLAccess test class.
+ * 
  */
 public class DeleteItemHandlerTest {
     
@@ -30,12 +33,15 @@ public class DeleteItemHandlerTest {
     @Test
     public void testHandle() throws Exception {
         System.out.println("handle");
+        
+        // Create the server and add handler
         HttpServer httpServer = HttpServer.create(new InetSocketAddress(9000), 0);
         httpServer.createContext("/deleteitem", new DeleteItemHandler());
         
-        // start the server
+        // Start the server
         httpServer.start();
-        // verify our client code
+        
+        // Verify the client code. Insert an invalid id an expect fail.
         URL url = new URL("http://localhost:9000/deleteitem?-4");
         URLConnection conn = url.openConnection();
         BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
@@ -53,7 +59,7 @@ public class DeleteItemHandlerTest {
         System.out.println("parseQuery");
         String query = "note=hello+world";
         String expResult = "hello world";
-        String result = AddItemHandler.parseQuery(query);
+        String result = new AddItemHandler().parseQuery(query);
         assertEquals(expResult, result);
     }
     

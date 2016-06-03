@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package todolisthttpserver;
 
 import com.sun.net.httpserver.HttpServer;
@@ -18,6 +13,10 @@ import handlers.ShowHistoryHandler;
 /**
  *
  * @author moshe
+ * 
+ * This is the main class for the program. It creates the server, 
+ * contains the main access to the database,
+ * as well as connects the correct handlers to the proper routes.
  */
 public class ToDoListHttpServer {
     static final String server = "jdbc:mysql://wixassignment.c9kdh6uh1bbe.us-west-2.rds.amazonaws.com/";

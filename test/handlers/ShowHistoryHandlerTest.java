@@ -18,6 +18,8 @@ import static org.junit.Assert.*;
 /**
  *
  * @author moshe
+ * This class runs a test to verify the showhistory context handler. It expects the 
+ * handler to return an a table so it tests for a table header.
  */
 public class ShowHistoryHandlerTest {
     
@@ -30,18 +32,22 @@ public class ShowHistoryHandlerTest {
     @Test
     public void testHandle() throws Exception {
         System.out.println("handle");
+        
+        // Create the server
         HttpServer httpServer = HttpServer.create(new InetSocketAddress(9000), 0);
         httpServer.createContext("/showhistory", new ShowHistoryHandler());
         
-        // start the server
+        // Start the server
         httpServer.start();
-        // verify our client code
+        
+        // Verify the client code. Expect the server to return a table, sp test
+        // for table header
         URL url = new URL("http://localhost:9000/showhistory");
         URLConnection conn = url.openConnection();
         BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
         assertEquals("<table border=\"1\">", in.readLine());
 
-        // stop the server
+        // Stop the server
         httpServer.stop(0);
     }
     

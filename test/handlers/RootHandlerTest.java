@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package handlers;
 
 import com.sun.net.httpserver.HttpExchange;
@@ -18,6 +13,9 @@ import static org.junit.Assert.*;
 /**
  *
  * @author moshe
+ * 
+ * This class runs a test to verify the root context handler is working properly.
+ * It expects the handler to return an HTML document.
  */
 public class RootHandlerTest {
     
@@ -30,12 +28,15 @@ public class RootHandlerTest {
     @Test
     public void testHandle() throws Exception {
         System.out.println("handle");
+        
+        // Create server to test response
         HttpServer httpServer = HttpServer.create(new InetSocketAddress(9000), 0);
         httpServer.createContext("/", new RootHandler());
         
-        // start the server
+        // Start the server
         httpServer.start();
-        // verify our client code
+        
+        // Verify client code. The test is expecting to return an HTML document
         URL url = new URL("http://localhost:9000/");
         URLConnection conn = url.openConnection();
         BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()));

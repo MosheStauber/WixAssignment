@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package handlers;
 
 import com.sun.net.httpserver.HttpExchange;
@@ -19,6 +14,10 @@ import todolisthttpserver.ToDoListHttpServer;
 /**
  *
  * @author moshe
+ * 
+ * This class handles the "/showhistory" context. It retrieves all the logs from
+ * the database and constructs an HTML table to return to the client. It can 
+ * return a populated or empty table.
  */
 public class ShowHistoryHandler implements HttpHandler {
 
