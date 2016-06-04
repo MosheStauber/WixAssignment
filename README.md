@@ -9,6 +9,5 @@ The database is hosted by **Amazon Web Services** using their **Relational Datab
 
 To run the server, you can import the project into netbeans and just press run. Then go the localhost:9000 in your web browser and see from there.
 
-Another option is to open run the jar file from the dist folder in the project and go to localhost:9000 in your web browser.
 
 
