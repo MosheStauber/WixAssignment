@@ -31,7 +31,7 @@ public class MySQLAccessTest {
         String server = "jdbc:mysql://wixassignment.c9kdh6uh1bbe.us-west-2.rds.amazonaws.com/";
         String dbname = "wixtodolisttest";
         String username = "moshe";
-        String password = "1Likeeggs";
+        String password = "moshepassword";
         boolean isTest = true;
         
         // Create db instance
@@ -56,7 +56,7 @@ public class MySQLAccessTest {
         String server = "jdbc:mysql://wixassignment.c9kdh6uh1bbe.us-west-2.rds.amazonaws.com/";
         String dbname = "wixtodolisttest";
         String username = "moshe";
-        String password = "1Likeeggs";
+        String password = "moshepassword";
         boolean isTest = true;
         
         // Create db instance
@@ -87,7 +87,7 @@ public class MySQLAccessTest {
         String server = "jdbc:mysql://wixassignment.c9kdh6uh1bbe.us-west-2.rds.amazonaws.com/";
         String dbname = "wixtodolisttest";
         String username = "moshe";
-        String password = "1Likeeggs";
+        String password = "moshepassword";
         boolean isTest = true;
         
         // Create instance and add note to list
@@ -116,7 +116,7 @@ public class MySQLAccessTest {
         String server = "jdbc:mysql://wixassignment.c9kdh6uh1bbe.us-west-2.rds.amazonaws.com/";
         String dbname = "wixtodolisttest";
         String username = "moshe";
-        String password = "1Likeeggs";
+        String password = "moshepassword";
         boolean isTest = true;
         
         // Create instance and add note to db, the log will record it. 

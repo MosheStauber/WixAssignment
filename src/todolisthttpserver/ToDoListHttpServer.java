@@ -22,7 +22,7 @@ public class ToDoListHttpServer {
     static final String server = "jdbc:mysql://wixassignment.c9kdh6uh1bbe.us-west-2.rds.amazonaws.com/";
     static final String dbname = "wixtodolist";
     static final String username = "moshe";
-    static final String password = "1Likeeggs";
+    static final String password = "moshepassword";
     
     public static final MySQLAccess DAO = new MySQLAccess(server + dbname, username, password);
     /**
