@@ -7,6 +7,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.net.URL;
 
 /**
  *
@@ -19,11 +20,13 @@ public class RootHandler implements HttpHandler {
     @Override
     public void handle(HttpExchange he) throws IOException {
         
-        File indexHTML = new File("src/views/index.html").getCanonicalFile(); 
+        String root = getRootPath();
+        
+        File indexHTML = new File(root + "/src/views/index.html").getCanonicalFile(); 
         
         if(!indexHTML.exists()){
             String response = "404 (Not Found)\n"
-                    + "curretn dir: " + System.getProperty("user.dir");
+                    + "current dir: " + root;
             he.sendResponseHeaders(404, response.length());
             OutputStream os = he.getResponseBody();
             os.write(response.getBytes());
@@ -40,6 +43,20 @@ public class RootHandler implements HttpHandler {
             fs.close();
             os.close();
         }
+    }
+    
+    // Get the root path of the application to allow run from Netbeans or JAR file
+    public String getRootPath(){
+        String match = "ToDoListHttpServer";
+        String root = System.getProperty("user.dir");
+        int endOfWordIdx = root.indexOf(match) + match.length()+1;
+        if(endOfWordIdx >= root.length()){
+            return root;
+        }
+        
+        String root2 = root.substring(0,endOfWordIdx);
+        System.out.println(root2);
+        return root2;
     }
     
 }
