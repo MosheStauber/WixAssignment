@@ -7,7 +7,9 @@ The server was to expose methods to add and item, delete an item, retrieve all i
 The server was built using `sun.net.httpserver` and `HttpHandlers` without a framework.  
 The database is hosted by **Amazon Web Services** using their **Relational Database Service**  
 
-To run the server, you can import the project into netbeans and just press run. Then go the localhost:9000 in your web browser and see from there.
+To run the server, you can import the project into netbeans and just press run. Then go localhost:9000 in your web browser.
+
+The saerver can also be run by starting the dist/ToDoListHttpServer.jar file and going localhost:9000 in your web browser.
 
 
 
